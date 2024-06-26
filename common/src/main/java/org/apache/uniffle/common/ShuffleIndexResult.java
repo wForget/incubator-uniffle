@@ -20,16 +20,12 @@ package org.apache.uniffle.common;
 import java.nio.ByteBuffer;
 
 import io.netty.buffer.Unpooled;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.apache.uniffle.common.netty.buffer.ManagedBuffer;
 import org.apache.uniffle.common.netty.buffer.NettyManagedBuffer;
 import org.apache.uniffle.common.util.ByteBufUtils;
 
 public class ShuffleIndexResult {
-
-  private static final Logger LOG = LoggerFactory.getLogger(ShuffleIndexResult.class);
 
   private final ManagedBuffer buffer;
   private long dataFileLen;
@@ -77,12 +73,6 @@ public class ShuffleIndexResult {
 
   public void release() {
     if (this.buffer != null) {
-      LOG.warn("Check ShuffleIndexResult release");
-      LOG.warn(Thread.currentThread().getName());
-      LOG.warn(this.toString());
-      LOG.warn(this.buffer.toString());
-      LOG.warn("Check ShuffleIndexResult release stack tree", new Throwable());
-
       this.buffer.release();
     }
   }
