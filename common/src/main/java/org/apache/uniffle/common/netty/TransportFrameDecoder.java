@@ -27,6 +27,8 @@ import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.uniffle.common.exception.RssException;
 import org.apache.uniffle.common.netty.protocol.Message;
@@ -47,6 +49,9 @@ import org.apache.uniffle.common.netty.protocol.Message;
  * method.
  */
 public class TransportFrameDecoder extends ChannelInboundHandlerAdapter implements FrameDecoder {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TransportFrameDecoder.class);
+
   private int msgSize = -1;
   private int bodySize = -1;
   private Message.Type curType = Message.Type.UNKNOWN_TYPE;
@@ -199,6 +204,12 @@ public class TransportFrameDecoder extends ChannelInboundHandlerAdapter implemen
     //     - When the Channel becomes inactive
     //     - When the decoder is removed from the ChannelPipeline
     for (ByteBuf b : buffers) {
+      LOG.warn("Check TransportFrameDecoder handlerRemoved");
+      LOG.warn(Thread.currentThread().getName());
+      LOG.warn(b.getClass().getName() + "@" + Integer.toHexString(b.hashCode()));
+      LOG.warn(b.toString());
+      LOG.warn("size: " + b.readableBytes());
+      LOG.warn("refCnt: " + b.refCnt());
       b.release();
     }
     buffers.clear();
