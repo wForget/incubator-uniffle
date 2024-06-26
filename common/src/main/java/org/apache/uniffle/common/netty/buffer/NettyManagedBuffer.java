@@ -35,6 +35,13 @@ public class NettyManagedBuffer extends ManagedBuffer {
 
   public NettyManagedBuffer(ByteBuf byteBuf) {
     this.buf = byteBuf;
+    LOG.warn("Check NettyManagedBuffer constructor");
+    LOG.warn(Thread.currentThread().getName());
+    LOG.warn(this.toString());
+    LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
+    LOG.warn(this.buf.toString());
+    LOG.warn("size: " + this.buf.readableBytes());
+    LOG.warn("refCnt: " + this.buf.refCnt());
   }
 
   @Override
@@ -63,8 +70,10 @@ public class NettyManagedBuffer extends ManagedBuffer {
     LOG.warn("Check NettyManagedBuffer release");
     LOG.warn(Thread.currentThread().getName());
     LOG.warn(this.toString());
+    LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
     LOG.warn(this.buf.toString());
     LOG.warn("size: " + this.buf.readableBytes());
+    LOG.warn("refCnt: " + this.buf.refCnt());
     LOG.warn("Check NettyManagedBuffer release stack tree", new Throwable());
     buf.release();
     return this;
