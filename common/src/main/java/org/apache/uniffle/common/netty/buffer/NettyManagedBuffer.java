@@ -70,7 +70,11 @@ public class NettyManagedBuffer extends ManagedBuffer {
     LOG.warn("Check NettyManagedBuffer release");
     LOG.warn(Thread.currentThread().getName());
     LOG.warn(this.toString());
-    LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
+    try {
+      LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
+    } catch (Throwable t) {
+      LOG.warn("Failed to get buf hashCode");
+    }
     LOG.warn(this.buf.toString());
     LOG.warn("size: " + this.buf.readableBytes());
     LOG.warn("refCnt: " + this.buf.refCnt());
