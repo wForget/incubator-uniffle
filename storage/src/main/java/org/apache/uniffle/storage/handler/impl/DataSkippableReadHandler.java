@@ -72,7 +72,7 @@ public abstract class DataSkippableReadHandler extends AbstractClientReadHandler
       if (shuffleIndexResult != null) {
         LOG.warn("shuffleIndexResult isEmpty: " + shuffleIndexResult.isEmpty());
         LOG.warn("shuffleIndexResult size: " + shuffleIndexResult.getManagedBuffer().size());
-        LOG.warn("shuffleIndexResult: " + shuffleIndexResult.toString());
+        LOG.warn("shuffleIndexResult: " + shuffleIndexResult.getManagedBuffer().toString());
       }
       if (shuffleIndexResult == null || shuffleIndexResult.isEmpty()) {
         return null;
