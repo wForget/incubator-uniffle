@@ -38,7 +38,10 @@ public class NettyManagedBuffer extends ManagedBuffer {
     LOG.warn("Check NettyManagedBuffer constructor");
     LOG.warn(Thread.currentThread().getName());
     LOG.warn(this.toString());
-    LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
+    LOG.warn(
+        this.buf.getClass().getName()
+            + "@"
+            + Integer.toHexString(System.identityHashCode(this.buf)));
     LOG.warn(this.buf.toString());
     LOG.warn("size: " + this.buf.readableBytes());
     LOG.warn("refCnt: " + this.buf.refCnt());
@@ -71,7 +74,10 @@ public class NettyManagedBuffer extends ManagedBuffer {
     LOG.warn(Thread.currentThread().getName());
     LOG.warn(this.toString());
     try {
-      LOG.warn(this.buf.getClass().getName() + "@" + Integer.toHexString(this.buf.hashCode()));
+      LOG.warn(
+          this.buf.getClass().getName()
+              + "@"
+              + Integer.toHexString(System.identityHashCode(this.buf)));
     } catch (Throwable t) {
       LOG.warn("Failed to get buf hashCode");
     }
