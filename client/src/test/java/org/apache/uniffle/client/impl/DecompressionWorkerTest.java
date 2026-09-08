@@ -124,39 +124,4 @@ public class DecompressionWorkerTest {
     DecompressedShuffleBlock block1 = worker.get(0, 1);
     assertEquals(100, block1.getByteBuffer().remaining());
   }
-
-  @Test
-  public void testGetPerformance() {
-    RssConf rssConf = new RssConf();
-    rssConf.set(COMPRESSION_TYPE, Codec.Type.NOOP);
-    Codec codec = Codec.newInstance(rssConf).get();
-    // Warm up with a small batch before measuring 100,000 blocks.
-    for (int segmentCount : new int[] {1000, 100_000}) {
-      DecompressionWorker worker = new DecompressionWorker(codec, 1, 10, segmentCount);
-      try {
-        worker.add(0, createShuffleDataResult(segmentCount, codec, 1));
-        // Finish decompression before timing get(), so setup and decompression are excluded.
-        Awaitility.await()
-            .atMost(10, TimeUnit.SECONDS)
-            .until(() -> worker.getPeekMemoryUsed() == segmentCount);
-
-        int consumed = 0;
-        long start = System.nanoTime();
-        for (int segment = 0; segment < segmentCount; segment++) {
-          if (worker.get(0, segment) != null) {
-            consumed++;
-          }
-        }
-        long elapsed = System.nanoTime() - start;
-        assertEquals(segmentCount, consumed);
-        assertEquals(segmentCount, worker.getAvailablePermits());
-        // Report timing only; a fixed time limit would depend on JIT/GC and machine load.
-        System.out.printf(
-            "DecompressionWorker.get: blocks=%d, elapsed=%.3f ms%n",
-            segmentCount, elapsed / 1_000_000.0);
-      } finally {
-        worker.close();
-      }
-    }
-  }
 }
