@@ -17,6 +17,8 @@
 
 package org.apache.uniffle.shuffle.manager;
 
+import org.apache.spark.shuffle.RssSparkConfig;
+
 import org.apache.uniffle.common.config.RssBaseConf;
 import org.apache.uniffle.common.config.RssConf;
 import org.apache.uniffle.common.metrics.GRPCMetrics;
@@ -47,6 +49,8 @@ public class ShuffleManagerServerFactory {
       if (service == null) {
         service = new ShuffleManagerGrpcService(shuffleManager);
       }
+      conf.set(
+          RssBaseConf.RPC_EXECUTOR_SIZE, conf.get(RssSparkConfig.RSS_CLIENT_RPC_EXECUTOR_SIZE));
       return GrpcServer.Builder.newBuilder()
           .conf(conf)
           .grpcMetrics(GRPCMetrics.getEmptyGRPCMetrics(conf))
