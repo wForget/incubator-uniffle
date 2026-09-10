@@ -41,7 +41,7 @@ import org.apache.uniffle.common.config.RssConf;
 public class RssSparkConfig {
 
   public static final ConfigOption<Integer> RSS_CLIENT_RPC_EXECUTOR_SIZE =
-      ConfigOptions.key("rss.clinet.rpc.executor.size")
+      ConfigOptions.key("rss.client.rpc.executor.size")
           .intType()
           .defaultValue(64)
           .withDescription("Core thread count for the shuffle manager gRPC server on the driver.");

@@ -49,10 +49,10 @@ public class ShuffleManagerServerFactory {
       if (service == null) {
         service = new ShuffleManagerGrpcService(shuffleManager);
       }
-      conf.set(
-          RssBaseConf.RPC_EXECUTOR_SIZE, conf.get(RssSparkConfig.RSS_CLIENT_RPC_EXECUTOR_SIZE));
+      int poolSize = conf.get(RssSparkConfig.RSS_CLIENT_RPC_EXECUTOR_SIZE);
       return GrpcServer.Builder.newBuilder()
           .conf(conf)
+          .threadPoolSize(poolSize)
           .grpcMetrics(GRPCMetrics.getEmptyGRPCMetrics(conf))
           .addService(service)
           .build();
