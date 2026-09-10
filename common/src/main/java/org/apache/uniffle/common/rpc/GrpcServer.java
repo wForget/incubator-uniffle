@@ -24,7 +24,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Supplier;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
@@ -80,11 +79,8 @@ public class GrpcServer implements ServerInterface {
     this.servicesWithInterceptors = servicesWithInterceptors;
     this.grpcMetrics = grpcMetrics;
 
-    Supplier<Integer> rpcExecutorSizeSupplier =
-        threadPoolSize == null
-            ? () -> conf.getInteger(RssBaseConf.RPC_EXECUTOR_SIZE)
-            : () -> threadPoolSize;
-    int rpcExecutorSize = rpcExecutorSizeSupplier.get();
+    int rpcExecutorSize =
+        threadPoolSize == null ? conf.getInteger(RssBaseConf.RPC_EXECUTOR_SIZE) : threadPoolSize;
     int queueSize = conf.getInteger(RssBaseConf.RPC_EXECUTOR_QUEUE_SIZE);
     pool =
         new GrpcThreadPoolExecutor(
@@ -97,8 +93,8 @@ public class GrpcServer implements ServerInterface {
             grpcMetrics);
     ThreadPoolManager.registerThreadPool(
         "Grpc",
-        rpcExecutorSizeSupplier,
-        () -> rpcExecutorSizeSupplier.get() * 2,
+        () -> rpcExecutorSize,
+        () -> rpcExecutorSize * 2,
         () -> TimeUnit.MINUTES.toMillis(10),
         pool);
   }
